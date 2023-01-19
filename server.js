@@ -1,20 +1,43 @@
+/**
+ * import the library
+ */
 const express = require('express');
-const mongoose = require('mongoose');
+const bodyParser = require('body-parser');
+
+/**
+ * import the routes file
+ */
+const authRoute = require('./routes/auth');
+const userRoute = require('./routes/users')
+const postRoute = require('./routes/posts');
+
+/**
+ * import some essential file
+ */
+const {DB} = require('./helpers/DB.js');
+const {SERVER_PORT} = require('./config.js');
+const {skills} = require('./dummy.js'); // for dummy data
+
+// Creating the app
 const app = express();
-const {SERVER_PORT, MONGO_URL} = require('./config.js');
-
-// export the dummy data
-const {skills} = require('./dummy.js');
-
 // Creating the database connection
-mongoose.connect(
-  MONGO_URL,
-  { useNewUrlParser: true, useUnifiedTopology: true },
-  () => {
-    console.log("DB Connected");
-  }
-);
+DB.ConnectDB();
 
+/**
+ * Setting the middleware
+ */
+// parse application/x-www-form-urlencoded
+app.use(bodyParser.urlencoded({ extended: false }))
+// parse application/json
+app.use(bodyParser.json())
+
+
+/**
+ * Setting the routes
+ */
+// app.use('/api/auth', authRoute);
+// app.use('/api/users', userRoute);
+app.use('/api/posts', postRoute);
 
 app.get('/api/skills', function(req, res) {
 	res.send(skills);
