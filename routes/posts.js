@@ -14,6 +14,31 @@ router.post('/create', async function(req, res, next) {
 	}
 })
 
+// delete a post by postID
+router.delete('/:postID', async function(req, res, next) {
+	try {
+		await Post.deleteOne({_id: req.params.postID});
+		return res.status(200).json('Post has been deleted');
+	} catch(error) {
+		return res.status(500).json(error);
+	}
+})
+
+// update a post by postID
+router.put('/:postID', async function(req, res, next) {
+	try {
+		const post = await Post.findById(req.params.postID);
+		if(post.userID === req.body.userID) {
+			await post.updateOne({$set: req.body});
+			return res.status(200).json('Post has been updated');
+		} else {
+			return res.status(403).json("You can update only your post");
+		}
+	} catch(error) {
+		return res.status(500).json("Unable to update the post");
+	}
+})
+
 // get all posts in collection
 router.get('/', async function(req, res, next) {
 	try {
@@ -51,9 +76,8 @@ router.get('/user/:userID', async function(req, res, next) {
 		return res.status(500).json("Something went wrong.");
 	}
 })
+
 /**
- * TODO: Delete one
- * TODO: Update one
  * TODO: like dislike
  * TODO: comment 
  * TOD: shares counter
