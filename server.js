@@ -35,8 +35,8 @@ app.use(bodyParser.json())
 /**
  * Setting the routes
  */
-// app.use('/api/auth', authRoute);
-// app.use('/api/users', userRoute);
+app.use('/api/auth', authRoute);
+app.use('/api/users', userRoute);
 app.use('/api/posts', postRoute);
 
 app.get('/api/skills', function(req, res) {
