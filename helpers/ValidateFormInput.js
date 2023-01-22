@@ -21,7 +21,8 @@ class Validation {
   	const errors = {
   		username: "",
   		email: "",
-  		password: ""
+  		password: "",
+      confirmPassword: ""
   	};
     // Username validation
   	const name_len = data.username.trim().length;
@@ -35,6 +36,9 @@ class Validation {
   	if(!this.ValidPassword(data.password)) {
   		errors.password = "Password must be between 3 to 30 characters";
   	}
+    if(data.password != data.confirmPassword) {
+      errors.confirmPassword = "Password does not match";
+    }
 
   	return errors;
   }

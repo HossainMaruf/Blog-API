@@ -39,6 +39,26 @@ router.put('/:postID', async function(req, res, next) {
 	}
 })
 
+// like dislike in a post
+router.post('/:postID/like', async function(req, res, next) {
+	  const userID = req.body.userID;
+		const post = await Post.findOne({_id: req.params.postID});
+		if(post) {
+			// post exists
+			if(post.likes.includes(userID)) {
+				// already liked so we need to dislike
+				await post.updateOne({$pull: {likes: userID}});
+				return res.status(200).json("Post has been disliked");
+			} else {
+				// user want to like the post
+				await post.updateOne({$push: {likes: userID}});
+				return res.status(200).json("Post has been liked");
+			}
+		} else {
+			return res.status(404).json("Post not found");
+		}
+})
+
 // get all posts in collection
 router.get('/', async function(req, res, next) {
 	try {
@@ -78,8 +98,7 @@ router.get('/user/:userID', async function(req, res, next) {
 })
 
 /**
- * TODO: like dislike
  * TODO: comment 
- * TOD: shares counter
+ * TODO: shares counter
  */
 module.exports = router;

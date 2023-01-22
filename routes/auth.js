@@ -12,7 +12,7 @@ router.post('/register', async function(req, res, next){
 	const errors = Validation.ValidateRegistration(req.body);
 	const count = Validation.ErrorCount(errors);
 	if(count > 0) {
-		return res.status(503).json(errors);
+		return res.status(403).json(errors);
 	} else {
 			try {
 			const user = await User.findOne({email: req.body.email});
@@ -42,7 +42,7 @@ router.post('/login', async function(req, res, next) {
 	const errors = Validation.ValidateLogin(req.body);
 	const count = Validation.ErrorCount(errors);
 	if(count > 0) {
-		return res.status(503).json(errors);
+		return res.status(403).json(errors);
 	} else {
 		try {
 			const user = await User.findOne({email: req.body.email});
@@ -51,7 +51,7 @@ router.post('/login', async function(req, res, next) {
 				const match = await bcrypt.compare(req.body.password, user.password);
 				if(match) {
 					// match the password
-					return res.status(200).json("Login Successful");
+					return res.status(200).json(user);
 				} else {
 					// does not match the password
 					errors.password = "Incorrect password";
