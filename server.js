@@ -26,11 +26,12 @@ DB.ConnectDB();
 /**
  * Setting the middleware
  */
+// static folder
+app.use(express.static("public"));
 // parse application/x-www-form-urlencoded
 app.use(bodyParser.urlencoded({ extended: false }))
 // parse application/json
 app.use(bodyParser.json())
-
 
 /**
  * Setting the routes

@@ -5,6 +5,12 @@ const postSchema = mongoose.Schema({
 		type: String,
 		required: true
 	},
+	title: {
+		type: String,
+		// required: true,
+		min: 5,
+		max: 50
+	},
 	description: {
 		type: String,
 		required: true,

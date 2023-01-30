@@ -48,11 +48,11 @@ router.post('/:postID/like', async function(req, res, next) {
 			if(post.likes.includes(userID)) {
 				// already liked so we need to dislike
 				await post.updateOne({$pull: {likes: userID}});
-				return res.status(200).json("Post has been disliked");
+				return res.status(200).json({count: post.likes.length - 1, message: "Post has been disliked"});
 			} else {
 				// user want to like the post
 				await post.updateOne({$push: {likes: userID}});
-				return res.status(200).json("Post has been liked");
+				return res.status(200).json({count: post.likes.length + 1, message: "Post has been liked"});
 			}
 		} else {
 			return res.status(404).json("Post not found");
