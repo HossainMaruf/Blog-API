@@ -11,16 +11,21 @@ const storage = multer.diskStorage({
     cb(null, path.join(__dirname, "../public/images"));
   },
   filename: function (req, file, cb) {
+    // console.log("filename", file)
     cb(null, Date.now() + "_" + file.originalname)
   }
 })
 const upload = multer({ storage: storage })
 
 // create a post
-router.post('/create', upload.single("file"), async function(req, res, next) {
+router.post('/create', upload.array("file", 10),  async function(req, res, next) {
     // console.log(req.body);
-    console.log("files", req.files);
-    console.log("file", req.file);
+    // console.log(req.files);
+    /**
+     * upload.array bind files to req.files
+     * upload.single bind file to req.file
+     * rest of the fields will be found in req.body
+     */
 	const newPost = new Post(req.body);
 	try {
 		const createdPost = await newPost.save();
@@ -78,7 +83,7 @@ router.post('/:postID/like', async function(req, res, next) {
 // get all posts in collection
 router.get('/', async function(req, res, next) {
 	try {
-		const posts = await Post.find();
+		const posts = await Post.find().sort({createdAt: -1});
 		return res.status(200).json(posts);
 	} catch(error) {
 		return res.status(500).json("Something went wrong.");
