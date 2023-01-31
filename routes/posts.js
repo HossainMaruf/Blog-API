@@ -47,11 +47,14 @@ router.delete('/:postID', async function(req, res, next) {
 
 // update a post by postID
 router.put('/:postID', async function(req, res, next) {
+    // console.log(req.params.postID, req.body);
 	try {
 		const post = await Post.findById(req.params.postID);
 		if(post.userID === req.body.userID) {
 			await post.updateOne({$set: req.body});
-			return res.status(200).json('Post has been updated');
+            const updatedPost = await Post.findById(req.params.postID);
+			return res.status(200).json({post: updatedPost, message: 'Post has been updated'});
+            // return res.status(200).json(updatedPost);
 		} else {
 			return res.status(403).json("You can update only your post");
 		}
