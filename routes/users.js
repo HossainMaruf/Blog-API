@@ -17,4 +17,31 @@ router.get("/:userID", async function(req, res, next) {
 		}
 })
 
+// follow unfollow a user
+router.post("/:userID", async function(req, res, next) {
+		try {
+			const user = await User.findById(req.params.userID);
+			const loggedInUser = await User.findById(req.body.userID);
+			if(user && loggedInUser) {
+				if(user.followers.includes(loggedInUser._id)) {
+					// already loginUser is a follower
+					await user.updateOne({$pull: {followers: loggedInUser._id}});
+					// remove from the following list for loggedInUser
+					await loggedInUser.updateOne({$pull: {followings: user._id}});
+				  return res.status(200).json({isFollower: false, message: `You unfollow ${user.username}`});
+				} else {
+					// loginUser is now following this user
+					await user.updateOne({$push: {followers: loggedInUser._id}});
+					// push to the followings list for loggedInUser
+					await loggedInUser.updateOne({$push: {followings: user._id}});
+				  return res.status(200).json({isFollower: true, message: `You are following ${user.username}`});
+				}
+			} else {
+				throw new Exception("Something went wrong");
+			}
+		}	catch(error) {
+			return res.status(500).json(error);	
+		}	
+})
+
 module.exports = router;

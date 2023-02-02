@@ -114,7 +114,7 @@ router.get('/user/:userID', async function(req, res, next) {
 		if(posts.length > 0) {
 			return res.status(200).json(posts);
 		} else {
-			return res.status(404).json("No post of this user");
+			return res.status(200).json("No post of this user");
 		}
 	} catch(error) {
 		return res.status(500).json("Something went wrong.");
