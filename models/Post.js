@@ -16,8 +16,13 @@ const postSchema = mongoose.Schema({
 		required: true,
 		max: 500	
 	},
-	img: {
-		type: String
+	imageFiles: {
+		type: Array,
+	  default: []
+	},
+	pdfFiles: {
+		type: Array,
+		default: []
 	},
 	likes: {
 		type: Array,

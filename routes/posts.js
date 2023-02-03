@@ -18,7 +18,7 @@ const storage = multer.diskStorage({
 const upload = multer({ storage: storage })
 
 // create a post
-router.post('/create', upload.array("file", 10),  async function(req, res, next) {
+router.post('/create', upload.array("file"),  async function(req, res, next) {
     // console.log(req.body);
     // console.log(req.files);
     /**
@@ -26,6 +26,19 @@ router.post('/create', upload.array("file", 10),  async function(req, res, next)
      * upload.single bind file to req.file
      * rest of the fields will be found in req.body
      */
+    const imageFiles = []
+    const pdfFiles = []
+    req.files.forEach(function(file) {
+       if(file.mimetype === "image/jpeg" || file.mimetype === "image/png") {
+            imageFiles.push(file.filename);
+       } else if(file.mimetype === "application/pdf") {
+            pdfFiles.push(file.filename); 
+       }
+    })
+    // console.log(imageFiles);
+    // console.log(pdfFiles);
+    req.body.imageFiles = imageFiles;
+    req.body.pdfFiles = pdfFiles;
 	const newPost = new Post(req.body);
 	try {
 		const createdPost = await newPost.save();
@@ -110,11 +123,11 @@ router.get('/:postID', async function(req, res, next) {
 // get all posts of a user
 router.get('/user/:userID', async function(req, res, next) {
 	try {
-		const posts = await Post.find({userID: req.params.userID});
+		const posts = await Post.find({userID: req.params.userID}).sort({createdAt: -1});
 		if(posts.length > 0) {
 			return res.status(200).json(posts);
 		} else {
-			return res.status(200).json("No post of this user");
+			return res.status(404).json("No post of this user");
 		}
 	} catch(error) {
 		return res.status(500).json("Something went wrong.");
