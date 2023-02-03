@@ -44,6 +44,6 @@ app.get('/api/skills', function(req, res) {
 	res.send(skills);
 });
 
-app.listen(SERVER_PORT, function() {
+app.listen(process.env.PORT || SERVER_PORT, function() {
 	console.log(`Server is running on port ${SERVER_PORT}`);		
 })
