@@ -1,18 +1,18 @@
-const mongoose = require('mongoose')
-const {MONGO_URL, LOCAL_MONGO_URL} = require('../config.js');
+const mongoose = require("mongoose");
+const { NODE_ENV, MONGO_URL, LOCAL_MONGO_URL } = require("../config.js");
+
+const db_url = NODE_ENV === "development" ? LOCAL_MONGO_URL : MONGO_URL;
 
 class DB {
-	static ConnectDB() {
-		mongoose.connect(
-		  // "mongodb+srv://MarufHossain:maruf170626@portfolio-blog.hwgz8yk.mongodb.net/blog?retryWrites=true&w=majority",
-			LOCAL_MONGO_URL,
-		  { useNewUrlParser: true, useUnifiedTopology: true},
-		  () => {
-		    console.log("DB Connected");
-		  }
-		);
-	}
+  static ConnectDB() {
+    mongoose.connect(
+      db_url,
+      { useNewUrlParser: true, useUnifiedTopology: true },
+      () => {
+        console.log("DB Connected");
+      }
+    );
+  }
 }
 
-
-module.exports = {DB}
+module.exports = { DB };
