@@ -4,7 +4,8 @@ const {MONGO_URL, LOCAL_MONGO_URL} = require('../config.js');
 class DB {
 	static ConnectDB() {
 		mongoose.connect(
-		  "mongodb+srv://MarufHossain:maruf170626@portfolio-blog.hwgz8yk.mongodb.net/blog?retryWrites=true&w=majority",
+		  // "mongodb+srv://MarufHossain:maruf170626@portfolio-blog.hwgz8yk.mongodb.net/blog?retryWrites=true&w=majority",
+			LOCAL_MONGO_URL,
 		  { useNewUrlParser: true, useUnifiedTopology: true},
 		  () => {
 		    console.log("DB Connected");
