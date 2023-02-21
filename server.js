@@ -10,6 +10,7 @@ const bodyParser = require("body-parser");
 const authRoute = require("./routes/auth");
 const userRoute = require("./routes/users");
 const postRoute = require("./routes/posts");
+const questionRoute = require("./routes/questions");
 
 /**
  * import some essential file
@@ -39,6 +40,7 @@ app.use(bodyParser.json());
 app.use("/api/auth", authRoute);
 app.use("/api/users", userRoute);
 app.use("/api/posts", postRoute);
+app.use("/api/questions", questionRoute);
 
 app.get("/api/skills", function (req, res) {
   res.send(skills);
