@@ -2,7 +2,7 @@ const mongoose = require('mongoose')
 const questionSchema = mongoose.Schema({
 	userID: {
 		type: String,
-		required: true
+		// required: true
 	},
 	name: {
 		type: String,
@@ -14,7 +14,7 @@ const questionSchema = mongoose.Schema({
 	},
 	answer: {
 		type: Number,
-		required: true,
+		// required: true,
 	},
 	category: {
 		type: String,

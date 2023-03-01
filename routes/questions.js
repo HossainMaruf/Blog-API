@@ -5,13 +5,22 @@ const Question = require('../models/Question');
 // create a question
 router.post("/create", async (req, res, next) => {
 	try {
-		const newQuestion = new Question(req.body);
-		const createdQuestion = await newQuestion.save(req.body);
+		const createdQuestion = await Question.insertMany(req.body.questions);
 		return res.status(200).json(createdQuestion);
 	} catch(error) {
 		return res.status(403).json("Could not create the question.");
 	}
 })
+
+// get all the categories
+router.get("/categories", async (req, res, next) => {
+	try {
+		const categories = await Question.find().distinct('category');
+		return res.status(200).json(categories);
+	} catch(error) {
+		return res.status(403).json("Something went wrong");
+	}
+});
 
 // get a specific question by questionID
 router.get("/:questionID", async (req, res, next) => {
@@ -37,6 +46,8 @@ router.delete("/:questionID", async (req, res, next) => {
 		return res.status(403).json('Could not delete the question');
 	}
 })
+
+
 
 // get all the questions
 router.get("/", async (req, res, next) => {

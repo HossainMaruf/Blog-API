@@ -1,7 +1,10 @@
 const router = require('express').Router();
+const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
 // Validation Rule
 const {Validation} = require('../helpers/ValidateFormInput');
+// import secret key
+const {USER_SECRET} = require('../config.js');
 
 // import the model
 const User = require('../models/User');
@@ -28,7 +31,11 @@ router.post('/register', async function(req, res, next){
 				req.body.password = hashPassword;
 				const newUser = new User(req.body);
 				const createdUser = await newUser.save();
-				return res.status(200).json(createdUser);
+				// jwt setup
+				const token = jwt.sign({
+			  data: createdUser,
+				}, USER_SECRET, { expiresIn: '1h' });
+				return res.status(200).json("Bearer " + token);
 			}
 		} catch(error) {
 			res.status(500).json(error);
@@ -51,7 +58,11 @@ router.post('/login', async function(req, res, next) {
 				const match = await bcrypt.compare(req.body.password, user.password);
 				if(match) {
 					// match the password
-					return res.status(200).json(user);
+					// we need to send a token
+					const token = jwt.sign({
+				  data: user,
+					}, USER_SECRET, { expiresIn: '1h' });
+					return res.status(200).json("Bearer " + token);
 				} else {
 					// does not match the password
 					errors.password = "Incorrect password";

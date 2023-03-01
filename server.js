@@ -11,6 +11,7 @@ const authRoute = require("./routes/auth");
 const userRoute = require("./routes/users");
 const postRoute = require("./routes/posts");
 const questionRoute = require("./routes/questions");
+const examRoute = require("./routes/exam");
 
 /**
  * import some essential file
@@ -41,6 +42,7 @@ app.use("/api/auth", authRoute);
 app.use("/api/users", userRoute);
 app.use("/api/posts", postRoute);
 app.use("/api/questions", questionRoute);
+app.use("/api/exam", examRoute);
 
 app.get("/api/skills", function (req, res) {
   res.send(skills);
