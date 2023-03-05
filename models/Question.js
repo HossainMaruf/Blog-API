@@ -14,11 +14,14 @@ const questionSchema = mongoose.Schema({
 	},
 	answer: {
 		type: Number,
-		// required: true,
+		required: true,
 	},
 	category: {
 		type: String,
 		required: true,
+	},
+	description: {
+		type: String
 	},
 	likes: {
 		type: Array,
