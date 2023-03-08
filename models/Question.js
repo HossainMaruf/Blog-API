@@ -23,6 +23,10 @@ const questionSchema = mongoose.Schema({
 	description: {
 		type: String
 	},
+	status: {
+		type: String,
+		default: "Visible" // another is Hidden
+	},
 	likes: {
 		type: Array,
 		default: []
