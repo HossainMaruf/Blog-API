@@ -1,5 +1,6 @@
 const router = require('express').Router();
 
+const auth = require('../middleware/auth');
 // get the model
 const User = require("../models/User");
 
@@ -45,12 +46,23 @@ router.post("/:userID", async function(req, res, next) {
 })
 
 // get all users in collection
-router.get("/", async function (req, res, next) {
+router.get("/",auth, async function (req, res, next) {
   try {
     const users = await User.find().sort({ createdAt: -1 });
     return res.status(200).json(users);
   } catch (error) {
     return res.status(500).json("Something went wrong.");
+  }
+})
+
+
+// delete a user
+router.delete("/:userID", async (req, res) => {
+  try {
+    await User.deleteOne({ _id: req.params.userID });
+    return res.status(200).json("User has been deleted");
+  } catch (error) {
+    return res.status(500).json(error);
   }
 })
 module.exports = router;

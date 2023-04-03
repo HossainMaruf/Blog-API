@@ -1,4 +1,5 @@
 const router = require('express').Router();
+const auth = require('../middleware/auth');
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
 // Validation Rule
@@ -32,10 +33,8 @@ router.post('/register', async function(req, res, next){
 				const newUser = new User(req.body);
 				const createdUser = await newUser.save();
 				// jwt setup
-				const token = jwt.sign({
-			  data: createdUser,
-				}, USER_SECRET, { expiresIn: '1h' });
-				return res.status(200).json("Bearer " + token);
+				const token = await createdUser.generateAuthToken();
+				return res.status(200).json({user, token: "Bearer " + token});
 			}
 		} catch(error) {
 			res.status(500).json(error);
@@ -46,6 +45,9 @@ router.post('/register', async function(req, res, next){
 
 // Login User
 router.post('/login', async function(req, res, next) {
+	if(req.user) {
+
+	}
 	const errors = Validation.ValidateLogin(req.body);
 	const count = Validation.ErrorCount(errors);
 	if(count > 0) {
@@ -59,10 +61,8 @@ router.post('/login', async function(req, res, next) {
 				if(match) {
 					// match the password
 					// we need to send a token
-					const token = jwt.sign({
-				  data: user,
-					}, USER_SECRET, { expiresIn: '1h' });
-					return res.status(200).json("Bearer " + token);
+					const token = await user.generateAuthToken();
+					return res.status(200).json({user, token: "Bearer " + token});
 				} else {
 					// does not match the password
 					errors.password = "Incorrect password";
@@ -78,4 +78,8 @@ router.post('/login', async function(req, res, next) {
 	}
 })
 
+// Logout User
+router.post("/logout", (req, res) => {
+	return res.status(200).json("LGOUT");
+})
 module.exports = router;

@@ -19,6 +19,7 @@ const examRoute = require("./routes/exam");
 const { DB } = require("./helpers/DB.js");
 const { SERVER_PORT } = require("./config.js");
 const { skills } = require("./dummy.js"); // for dummy data
+const auth = require("./middleware/auth");
 
 // Creating the app
 const app = express();
@@ -44,7 +45,7 @@ app.use("/api/posts", postRoute);
 app.use("/api/questions", questionRoute);
 app.use("/api/exam", examRoute);
 
-app.get("/api/skills", function (req, res) {
+app.get("/api/skills", auth, function (req, res) {
   res.send(skills);
 });
 
