@@ -12,6 +12,7 @@ const userRoute = require("./routes/users");
 const postRoute = require("./routes/posts");
 const questionRoute = require("./routes/questions");
 const examRoute = require("./routes/exam");
+const categoryRoute = require("./routes/category");
 
 /**
  * import some essential file
@@ -44,6 +45,7 @@ app.use("/api/users", userRoute);
 app.use("/api/posts", postRoute);
 app.use("/api/questions", questionRoute);
 app.use("/api/exam", examRoute);
+app.use("/api/category", categoryRoute);
 
 app.get("/api/skills", auth, function (req, res) {
   res.send(skills);

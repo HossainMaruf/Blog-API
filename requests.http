@@ -35,3 +35,23 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Im1hcnVma
 
 ### Delete a user
 DElETE http://localhost:5000/api/users/63e7344a2a0bb938ba8a39fb
+
+
+### Create Category
+POST http://localhost:5000/api/category
+Content-Type: application/json
+
+{
+  "userID": "1",
+  "name": "HSC Math",
+  "sub": ["geometry", "calculus", "algebra", "number theory"]
+}
+
+### Delete a category
+DELETE http://localhost:5000/api/category/hsc math
+
+### Get all categories
+GET http://localhost:5000/api/category/all
+
+### Get sub categories of a category
+GET http://localhost:5000/api/category/hsc math
